@@ -139,25 +139,35 @@ namespace Formularios
 
             Paciente paciente;
 
-            if (!string.IsNullOrEmpty(nombre) && !string.IsNullOrEmpty(apellido)
-                && !string.IsNullOrEmpty(dni) && !string.IsNullOrEmpty(mail)
-                && !string.IsNullOrEmpty(telefono) && !string.IsNullOrEmpty(fecha)
-                && !string.IsNullOrEmpty(obraSocial) && !string.IsNullOrEmpty(hora) && !string.IsNullOrEmpty(obraSocial))
-            {
-                paciente = new Paciente(nombre, apellido, dni, mail, telefono, fecha, hora, (EObraSocial)ObtenerObraSocial(obraSocial), (ETipoConsulta)ObtenerTipoConsulta(tipoConsulta));
-                Consultorio.AgregarPaciente(paciente);
-
-                MessageBox.Show("Turno cargado...", "Paciente", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                MessageBox.Show($"Se le enviara un mail al paciente a: {mail} ", "Información" ,MessageBoxButtons.OK, MessageBoxIcon.Information);
-
-                FormPrincipal frmPrincipal = new FormPrincipal();
-                frmPrincipal.ShowDialog();
-                this.Hide();
-            }
-            else
+            if (!ValidarCampos(nombre, apellido, dni, telefono, mail, fecha, hora, obraSocial))
             {
                 MessageBox.Show("Error, por favor ingrese los datos solicitados.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+
+            paciente = RegistrarPaciente(nombre, apellido, dni, telefono, mail, fecha, hora, obraSocial, tipoConsulta);
+
+        }
+
+        private Paciente RegistrarPaciente(string nombre, string apellido, string dni, string telefono, string mail, string fecha, string hora, string obraSocial, string tipoConsulta)
+        {
+            Paciente paciente = new Paciente(nombre, apellido, dni, mail, telefono, fecha, hora, (EObraSocial)ObtenerObraSocial(obraSocial), (ETipoConsulta)ObtenerTipoConsulta(tipoConsulta));
+            Consultorio.AgregarPaciente(paciente);
+
+            MessageBox.Show("Turno cargado...", "Paciente", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            MessageBox.Show($"Se le enviara un mail al paciente a: {mail} ", "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+            FormPrincipal frmPrincipal = new FormPrincipal();
+            frmPrincipal.ShowDialog();
+            this.Hide();
+            return paciente;
+        }
+
+        private static bool ValidarCampos(string nombre, string apellido, string dni, string telefono, string mail, string fecha, string hora, string obraSocial)
+        {
+            return !string.IsNullOrEmpty(nombre) && !string.IsNullOrEmpty(apellido)
+                            && !string.IsNullOrEmpty(dni) && !string.IsNullOrEmpty(mail)
+                            && !string.IsNullOrEmpty(telefono) && !string.IsNullOrEmpty(fecha)
+                            && !string.IsNullOrEmpty(obraSocial) && !string.IsNullOrEmpty(hora) && !string.IsNullOrEmpty(obraSocial);
         }
 
         /// <summary>
