@@ -1,0 +1,7 @@
+Para conectar con base de datos
+se necesita
+command (query)
+conexion (a donde y que)
+datareader (traigo datos)
+
+ 
